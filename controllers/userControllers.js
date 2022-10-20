@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const Note = require("../models/Note");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 
@@ -98,7 +97,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   const updatedUser = await user.save();
 
-  res.json({ message: `${updateUser.email} actualizado` });
+  res.json({ message: `${updatedUser.email} actualizado` });
 });
 
 //@desc delete a user
