@@ -18,13 +18,18 @@ const login = asyncHandler(async (req, res) => {
 
   const foundUser = await User.findOne({ email }).exec();
 
-  if (!foundUser || !foundUser.active) {
+  if (!foundUser) {
     res.status(401).json({ message: "Usuario no encontrado" });
   }
 
   const match = await bcrypt.compare(password, foundUser.password);
 
   if (!match) return res.status(401).json({ message: "Contraseña incorrecta" });
+
+  const date = new Date()
+  foundUser.date = date.toLocaleString()
+
+  await foundUser.save()
 
   const accessToken = jwt.sign(
     {
@@ -64,7 +69,7 @@ const login = asyncHandler(async (req, res) => {
 const refresh = (req, res) => {
   const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.status(401).json({ message: "No autorizado" });
+  if (!cookies?.jwt) return res.status(401).json({ message: "No autorizado." });
 
   const refreshToken = cookies.jwt;
 
@@ -76,7 +81,7 @@ const refresh = (req, res) => {
 
       const foundUser = await User.findOne({ email: decoded.email });
 
-      if (!foundUser) return res.status(401).json({ message: "No autorizado" });
+      if (!foundUser) return res.status(401).json({ message: "Usuario no encontrado." });
 
       const accessToken = jwt.sign(
         {

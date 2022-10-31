@@ -23,10 +23,11 @@ const userSchema = new mongoose.Schema({
       default: "Curso 1",
     },
   ],
-  active: {
-    type: Boolean,
-    default: true,
+  date: {
+    type: String,
   },
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.model('User', userSchema)

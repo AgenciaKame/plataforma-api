@@ -47,7 +47,11 @@ const createNewUser = asyncHandler(async (req, res) => {
   //Hash the password
   const hashedPassword = await bcrypt.hash(password, 10); //salt rounds
 
-  const userObject = { name, lastName, email, password: hashedPassword, roles };
+  //Set the date
+  const newDate = new Date()
+  const date = newDate.toLocaleString()
+
+  const userObject = { name, lastName, email, password: hashedPassword, roles, date };
 
   //Create and store new user
   const user = await User.create(userObject);
